@@ -6,28 +6,30 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Config.pedroPathing.Constants;
 
 @Autonomous
-public class ExampleAuto extends OpMode {
+public class ExampleAuto extends LinearOpMode {
 
     private Follower follower;
     private int pathState = 0;
 
     @Override
-    public void init() {
+    public void runOpMode() {
         follower = Constants.createFollower(hardwareMap);
         follower.setStartingPose(new Pose(72, 72, 90));
         buildPaths();
-    }
 
-    @Override
-    public void loop() {
-        follower.update();
-        autonomousPathUpdate();
-        telemetry.addData("Current Pose: ", follower.getPose());
+        waitForStart();
+
+        while (opModeIsActive()){
+            follower.update();
+            autonomousPathUpdate();
+            telemetry.addData("Current Pose: ", follower.getPose());
+        }
     }
 
     private PathChain line1, curve1, line2;

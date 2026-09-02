@@ -3,7 +3,6 @@
 package org.firstinspires.ftc.teamcode.opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Config.MecanumDrive;
@@ -13,13 +12,14 @@ import org.firstinspires.ftc.teamcode.Config.MecanumDrive;
 @TeleOp(name = "Mecanum -Robot Centric")
 public class MecanumDriveTeleOp extends LinearOpMode {
     private MecanumDrive drive;
-
     private double speedMultiply = 0.5;
 
     @Override
     public void runOpMode() {
+        // Happens on "INIT"
         telemetry.addLine("Initializing...");
         telemetry.update();
+        // *** >> telemetry is displayed on the driver station. "The output" of the robot (Needs to be updated to show changes to text)
 
         drive = new MecanumDrive();
         drive.init(hardwareMap);
@@ -27,11 +27,11 @@ public class MecanumDriveTeleOp extends LinearOpMode {
         telemetry.addLine("Ready!");
         telemetry.update();
 
+        // ------------------
         waitForStart();
-
+        // Sequencing after hitting "Start"
         while(opModeIsActive()){
-
-
+            // Main loop after hitting "Start"
             if (gamepad1.dpad_up) {
                 speedMultiply = 0.25;
             } else if (gamepad1.dpad_left) {
@@ -39,24 +39,20 @@ public class MecanumDriveTeleOp extends LinearOpMode {
             } else if (gamepad1.dpad_down) {
                 speedMultiply = 0.75;
             } else if (gamepad1.dpad_right)  {;
-
                 speedMultiply = 1.0;
             }
 
             double forward = -1*gamepad1.left_stick_y * speedMultiply;
             double strafe  =  gamepad1.left_stick_x * speedMultiply;
             double rotate  =  gamepad1.right_stick_x * speedMultiply;
-            /** Send inputs to drive class using method created in Mecanum Drive Class */
+
+            // Sends inputs to the Mecanum drive object.
             drive.drive(forward, strafe, rotate);
 
             telemetry.addData("fl power", drive.frontLeftMotor.getPower());
             telemetry.addData("fr Power", drive.frontRightMotor.getPower());
             telemetry.addData("rl Power", drive.backLeftMotor.getPower());
             telemetry.addData("rr Power", drive.backRightMotor.getPower());
-
-            telemetry.addLine("sloth");
-
-
 
             telemetry.update();
         }
